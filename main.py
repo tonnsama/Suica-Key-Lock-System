@@ -6,6 +6,8 @@ from key_move import wrongCard
 from sensor import measure
 import os, time, sys
 
+OPEN_TIME = 10
+CLOSE_TIME = 60
 
 def main():
 
@@ -56,7 +58,7 @@ def main():
 						distance = measure()
 						elapsed_time = time.time() - start_time
 					#	print(distance)
-						if distance > 20 or elapsed_time > 10:
+						if distance > 20 or elapsed_time > OPEN_TIME:
 							break
 						time.sleep(0.1)
 
@@ -67,7 +69,7 @@ def main():
 						distance = measure()
 						elapsed_time = time.time() - start_time
 					#	print(distance)
-						if distance < 4 or elapsed_time > 15:
+						if distance < 4 or elapsed_time > CLOSE_TIME:
 							time.sleep(1)
 							lock()
 							print("Locked the key")
