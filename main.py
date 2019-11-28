@@ -48,21 +48,26 @@ def main():
 					unlock()
 					print("Unlocked the key")
 
+					start_time = time.time()
+					# Waiting for Opening the Door
 					print("Open the door")
 					time.sleep(2)
 					while True:
 						distance = measure()
+						elapsed_time = time.time() - start_time
 					#	print(distance)
-						if distance > 20:
+						if distance > 20 or elapsed_time > 10:
 							break
 						time.sleep(0.1)
 
 					print("Close the door")
 					time.sleep(2)
+					# Winting for Closing the Door
 					while True:
 						distance = measure()
+						elapsed_time = time.time() - start_time
 					#	print(distance)
-						if distance < 4:
+						if distance < 4 or elapsed_time > 15:
 							time.sleep(1)
 							lock()
 							print("Locked the key")
