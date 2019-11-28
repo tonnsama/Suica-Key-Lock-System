@@ -8,6 +8,8 @@ import os, time, sys
 
 OPEN_TIME = 10
 CLOSE_TIME = 60
+OPEN_DISTANCE = 7
+CLOSE_DISTANCE = 4
 
 def main():
 
@@ -58,7 +60,7 @@ def main():
 						distance = measure()
 						elapsed_time = time.time() - start_time
 					#	print(distance)
-						if distance > 20 or elapsed_time > OPEN_TIME:
+						if distance > OPEN_DISTANCE or elapsed_time > OPEN_TIME:
 							break
 						time.sleep(0.1)
 
@@ -69,7 +71,7 @@ def main():
 						distance = measure()
 						elapsed_time = time.time() - start_time
 					#	print(distance)
-						if distance < 4 or elapsed_time > CLOSE_TIME:
+						if distance < CLOSE_DISTANCE or elapsed_time > CLOSE_TIME:
 							time.sleep(1)
 							lock()
 							print("Locked the key")
