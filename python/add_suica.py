@@ -2,7 +2,7 @@ import binascii
 import nfc
 from key_move import lock
 from key_move import unlock
-import time, os
+import time, os, sys
 
 def add_card():
 	clf = nfc.ContactlessFrontend('usb')
@@ -12,26 +12,30 @@ def add_card():
 	target_req.sensf_req = bytearray.fromhex("0000030000")
 
 	print("Touch a Card")
+	args = sys.argv
 
 	while True:
 		target_res = clf.sense(target_req, iterations=10, interval=0.01)
 		if target_res != None:
 			card = binascii.hexlify(target_res.sensf_res) + '\n'
-			data = open('/home/pi/key/suica.dat', 'r')
+			normal_cards = open('/home/pi/key/data/normal_cards.dat', 'r')
+			auto_close_cards = open('/home/pi/key/data/auto-close_cards.dat', 'r')
 			flag = True
-			for line in data:
+
+			# Check if the card has been already in "normal_cards.dat"
+			for line in normal_cards:
 				if card == line:
 					print("This card has been already added")
 					flag = False
 					break
 
 			if flag:
-				with open('/home/pi/key/suica.dat', 'a') as f:
+				with open('/home/pi/key/data/normal_cards.dat', 'a') as f:
 					f.write(card)
 				f.close()
 				print("added successfully")
 
-			data.close()
+			normal_cards.close()
 			break
 	clf.close()
 

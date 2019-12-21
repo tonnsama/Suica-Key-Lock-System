@@ -32,8 +32,8 @@ def main():
 				card = binascii.hexlify(target_res.sensf_res) + '\n'
 				auth = False
 				is_excard = False
-				data = open('/home/pi/key/suica.dat', 'r')
-				excards = open('/home/pi/key/excard.dat', 'r')
+				data = open('/home/pi/key/data/normal_cards.dat', 'r')
+				excards = open('/home/pi/key/data/auto-close_cards.dat', 'r')
 
 				for line in excards:
 					if card == line:
