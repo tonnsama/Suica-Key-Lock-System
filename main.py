@@ -6,8 +6,8 @@ from key_move import wrongCard
 from sensor import measure
 import os, time, sys
 
-OPEN_TIME = 10
-CLOSE_TIME = 60
+OPEN_TIME = 5 # second
+CLOSE_TIME = 60 # second
 OPEN_DISTANCE = 7
 CLOSE_DISTANCE = 4
 
