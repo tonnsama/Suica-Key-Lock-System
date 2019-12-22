@@ -2,7 +2,7 @@ import binascii
 import nfc
 from key_move import lock
 from key_move import unlock
-import time, os
+import time, os, sys
 
 def add_card():
 	clf = nfc.ContactlessFrontend('usb')
