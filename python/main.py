@@ -11,8 +11,11 @@ from sensor import measure
 
 OPEN_TIME = 5 # second
 CLOSE_TIME = 60 # second
-OPEN_DISTANCE = 7
-CLOSE_DISTANCE = 4
+OPEN_DISTANCE = 7 # cm
+CLOSE_DISTANCE = 4 # cm
+
+filename_normal_cards = "/home/pi/key/data/normal_cards.dat"
+filename_auto_close_cards = "/home/pi/key/data/auto_close_cards.dat"
 
 def main():
 
@@ -36,7 +39,7 @@ def main():
 				auth = False
 				is_excard = False
 				normal_cards = open('/home/pi/key/data/normal_cards.dat', 'r')
-				auto_close_cards = open('/home/pi/key/data/auto-close_cards.dat', 'r')
+				auto_close_cards = open('/home/pi/key/data/auto_close_cards.dat', 'r')
 
 				for line in auto_close_cards:
 					if card == line:

@@ -16,9 +16,11 @@ def add_card():
 
 	print("Touch a Card")
 	args = sys.argv
+	# print(args[1])
 
 	while True:
-		if args.len() != 2 or args[1] != "n" or args[1] != "a":
+		if len(args) != 2 or not (args[1] == "n" or args[1] == "a"):
+		# if args[1] != "n":
 			print("Please set your option n for normal or a for auto close")
 			break
 
@@ -52,12 +54,17 @@ def add_card():
 					f.close()
 					print("Added as a Normal Card")
 
-				# Add the card as an Auto Close Card
+				# Add the card as an Auto Close Card and Normal Card
 				if args[1] == "a":
 					with open(filename_auto_close_cards, 'a') as f:
 						f.write(card)
 					f.close()
-					print("Added as an Auto Close Card")
+
+					with open(filename_normal_cards, 'a') as f:
+						f.write(card)
+					f.close()
+
+					print("Added as an Auto Close Card and Normal Card")
 
 			normal_cards.close()
 			auto_close_cards.close()
