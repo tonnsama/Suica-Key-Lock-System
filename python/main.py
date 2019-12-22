@@ -1,10 +1,13 @@
 import binascii
 import nfc
+import os, time, sys
+
+# User Python fuction
 from key_move import lock
 from key_move import unlock
 from key_move import wrongCard
 from sensor import measure
-import os, time, sys
+
 
 OPEN_TIME = 5 # second
 CLOSE_TIME = 60 # second
@@ -32,10 +35,10 @@ def main():
 				card = binascii.hexlify(target_res.sensf_res) + '\n'
 				auth = False
 				is_excard = False
-				data = open('/home/pi/key/data/normal_cards.dat', 'r')
-				excards = open('/home/pi/key/data/auto-close_cards.dat', 'r')
+				normal_cards = open('/home/pi/key/data/normal_cards.dat', 'r')
+				auto_close_cards = open('/home/pi/key/data/auto-close_cards.dat', 'r')
 
-				for line in excards:
+				for line in auto_close_cards:
 					if card == line:
 						is_excard = True
 
@@ -83,7 +86,7 @@ def main():
 				# if the Card is not an excard or Key is unlocked
 				else:
 					# check the card
-					for line in data:
+					for line in normal_cards:
 						# if the Card is Registered
 						if card == line:
 							print("Successiful")
@@ -103,7 +106,7 @@ def main():
 					print("Wrong Card")
 					wrongCard(key_state)
 
-				data.close()
+				normal_cards.close()
 
 
 
