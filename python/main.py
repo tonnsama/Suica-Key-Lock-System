@@ -1,6 +1,6 @@
 import binascii
 import nfc
-import os, time, sys
+import os, time, sys, datetime as dt
 
 # User Python fuction
 from key_move import lock
@@ -9,13 +9,17 @@ from key_move import wrongCard
 from sensor import measure
 
 
-OPEN_TIME = 5 # second
+OPEN_TIME = 3 # second
 CLOSE_TIME = 60 # second
 OPEN_DISTANCE = 7 # cm
 CLOSE_DISTANCE = 4 # cm
 
 filename_normal_cards = "/home/pi/key/data/normal_cards.dat"
 filename_auto_close_cards = "/home/pi/key/data/auto_close_cards.dat"
+filename_log = "/home/pi/key/data/key.log"
+
+
+
 
 def main():
 
@@ -27,34 +31,59 @@ def main():
 	target_req.sensf_req = bytearray.fromhex("0000030000")
 
 
+
+	tmp_date = dt.date.today()
 	key_state = True # lock position
 
 	while True:
 		try:
+
+			# Open Log file
+			today = dt.date.today()
+			if today == tmp_date:
+				logfile = open(filename_log, mode="a")
+			else:
+				logfile = open(filename_log, mode="w")
+
+
 			target_res = clf.sense(target_req, iterations=10, interval=0.01)
+
+			# s = "Touch your Card...\n"
+			# print(s)
+			# logfile.writelines(s)
 
 			if target_res != None:
 
 				card = binascii.hexlify(target_res.sensf_res) + '\n'
 				auth = False
-				is_excard = False
-				normal_cards = open('/home/pi/key/data/normal_cards.dat', 'r')
-				auto_close_cards = open('/home/pi/key/data/auto_close_cards.dat', 'r')
+				is_auto_card = False
+				normal_cards = open(filename_normal_cards, 'r')
+				auto_close_cards = open(filename_auto_close_cards, 'r')
 
 				for line in auto_close_cards:
 					if card == line:
-						is_excard = True
+						is_auto_card = True
 
-				# if the Card is excard and Key is locked
-				if is_excard:
-					print("Express card ")
+				# if it is an Auto Close Card and Key is Locked
+				if is_auto_card:
+					s = "Auto Close Card"
+					print(s)
+					logfile.write(s)
+
 				if key_state:
-					print("Current key state is Locked")
+					s = "Current key state is Locked"
+					print(s)
+					logfile.write(s)
 				else:
-					print("Current key state is Unlocked")
+					s = "Current key state is Unlocked"
+					print(s)
+					logfile.write(s)
 
-				if is_excard and key_state:
-					print("Express Card : the Key will be Locked Automatically")
+				if is_auto_card and key_state:
+					s = "Express Card : the Key will be Locked Automatically"
+					print(s)
+					logfile.write(s)
+
 					unlock()
 					print("Unlocked the key")
 
@@ -84,9 +113,12 @@ def main():
 							break
 						time.sleep(0.1)
 
+					tmp_date = today
+					logfile.close()
 					continue
 
-				# if the Card is not an excard or Key is unlocked
+
+				# if it is Normal Card or Key is Unlocked
 				else:
 					# check the card
 					for line in normal_cards:
@@ -129,7 +161,6 @@ def main():
 			break
 
 		time.sleep(0.05)
-
 
 	clf.close()
 
