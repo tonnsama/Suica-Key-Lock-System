@@ -114,9 +114,6 @@ def main():
 
 					time.sleep(2)
 
-					while True:
-
-
 
 
 
