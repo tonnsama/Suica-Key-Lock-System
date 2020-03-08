@@ -1,24 +1,9 @@
-2020-03-08 18:46:04.101645
-Current key state is Locked
-Successiful
-Unlocked the key
-2020-03-08 18:46:06.768435
-Current key state is Unlocked
-Successiful
-Locked the key
-2020-03-08 18:46:08.782320
+2020-03-09 06:00:40.387147
 Auto Close Card
 Current key state is Locked
 Express Card : the Key will be Locked Automatically
 Unlocked the key
 Open the door
-distance = 12.580871582
-elapsed time = 2.00351905823
+distance = 11.4095211029
+elapsed time = 2.00874400139
 Close the door
-Locked the key
-distance = 3.7248134613
-elapsed time = 4.51216316223
-2020-03-08 19:06:32.963638
-Current key state is Locked
-Successiful
-Unlocked the key

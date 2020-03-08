@@ -17,7 +17,7 @@ filename_auto_close_cards = "/home/pi/key/data/auto_close_cards.dat"
 filename_log_1 = "/home/pi/key/data/key-1.log"
 filename_log_2 = "/home/pi/key/data/key-2.log"
 
-def write_log(str, tmp_date, tmp_logfile):
+def write_log(s, tmp_date, tmp_logfile):
 	today = dt.date.today()
 	now = dt.datetime.now()
 	rt_filename = tmp_logfile
@@ -33,7 +33,7 @@ def write_log(str, tmp_date, tmp_logfile):
 
 		logfile = open(rt_filename, mode='w')
 
-	logfile.write(str(now) + str + '\n')
+	logfile.write(str(now) + ': ' + s + '\n')
 	logfile.close()
 
 	return rt_filename
@@ -53,6 +53,7 @@ def main():
 
 	tmp_date = dt.date.today()
 	key_state = True # lock position
+	tmp_logfile = filename_log_1
 
 	while True:
 		try:
@@ -62,15 +63,14 @@ def main():
 			if target_res != None:
 
 				# Open Log file
-				today = dt.date.today()
-				now = dt.datetime.now()
+				# today = dt.date.today()
 
-				if today == tmp_date:
-					logfile = open(filename_log_1, mode="a")
-					logfile.write(str(now) + "\n")
-				else:
-					logfile = open(filename_log_1, mode="w")
-					logfile.write(str(now) + "\n")
+				# if today == tmp_date:
+				# 	logfile = open(filename_log_1, mode="a")
+				# 	logfile.write(str(now) + "\n")
+				# else:
+				# 	logfile = open(filename_log_1, mode="w")
+				# 	logfile.write(str(now) + "\n")
 
 
 				card = binascii.hexlify(target_res.sensf_res) + '\n'
@@ -78,7 +78,7 @@ def main():
 				is_auto_card = False
 				normal_cards = open(filename_normal_cards, 'r')
 				auto_close_cards = open(filename_auto_close_cards, 'r')
-				tmp_date = today
+				# tmp_date = today
 
 				for line in auto_close_cards:
 					if card == line:
@@ -86,50 +86,53 @@ def main():
 
 				# if it is an Auto Close Card and Key is Locked
 				if is_auto_card:
-					s = "Auto Close Card\n"
-					print(s)
-					logfile.write(s)
+					s = "Auto Close Card"
+					tmp_logfile = write_log(s, tmp_date, tmp_logfile)
 
 				if key_state:
-					s = "Current key state is Locked\n"
-					print(s)
-					logfile.write(s)
+					s = "Current key state is Locked"
+					tmp_logfile = write_log(s, tmp_date, tmp_logfile)
 				else:
-					s = "Current key state is Unlocked\n"
-					print(s)
-					logfile.write(s)
+					s = "Current key state is Unlocked"
+					tmp_logfile = write_log(s, tmp_date, tmp_logfile)
+
+
 
 				if is_auto_card and key_state:
-					s = "Express Card : the Key will be Locked Automatically\n"
-					print(s)
-					logfile.write(s)
+					s = "Express Card : the Key will be Locked Automatically"
+					tmp_logfile = write_log(s, tmp_date, tmp_logfile)
 
 					unlock()
-					s = "Unlocked the key\n"
-					print(s)
-					logfile.write(s)
 
-					start_time = time.time()
+					s = "Unlocked the key"
+					tmp_logfile = write_log(s, tmp_date, tmp_logfile)
+
+					# start_time = time.time()
 					# Waiting for Opening the Door
-					s = "Open the door\n"
-					print(s)
-					logfile.write(s)
+					s = "Open the door"
+					tmp_logfile = write_log(s, tmp_date, tmp_logfile)
 
 					time.sleep(2)
+
 					while True:
-						distance = measure()
-						elapsed_time = time.time() - start_time
+
+
+
+
+
+					while True:
+						# distance = measure()
+						# elapsed_time = time.time() - start_time
 					#	print(distance)
-						if distance > OPEN_DISTANCE or elapsed_time > OPEN_TIME:
-							s = "distance = " + str(distance) + "\nelapsed time = " + str(elapsed_time) + "\n"
-							logfile.write(s)
+						if is_closed():
+							s =
+							tmp_logfile = write_log(s, tmp_date, tmp_logfile)
 							break
 						time.sleep(0.1)
 
 
-					s = "Close the door\n"
-					print(s)
-					logfile.write(s)
+					s = "Close the door"
+					tmp_logfile = write_log(s, tmp_date, tmp_logfile)
 
 					time.sleep(2)
 					# Waiting for Closing the Door
@@ -140,18 +143,17 @@ def main():
 						if distance < CLOSE_DISTANCE or elapsed_time > CLOSE_TIME:
 							time.sleep(1)
 							lock()
-							s = "Locked the key\n"
-							print(s)
-							logfile.write(s)
+							s = "Locked the key"
+							tmp_logfile = write_log(s, tmp_date, tmp_logfile)
 							# logfile.write(distance)
-							s = "distance = " + str(distance) + "\nelapsed time = " + str(elapsed_time) + "\n"
-							logfile.write(s)
+							s = "distance = " + str(distance) + ", elapsed time = " + str(elapsed_time) + "\n"
+							tmp_logfile = write_log(s, tmp_date, tmp_logfile)
 							break
 
 						time.sleep(0.1)
 
 
-					logfile.close()
+					# logfile.close()
 					continue
 
 
@@ -161,41 +163,39 @@ def main():
 					for line in normal_cards:
 						# if the Card is Registered
 						if card == line:
-							s = "Successiful\n"
-							print(s)
-							logfile.write(s)
+							s = "Successiful"
+							tmp_logfile = write_log(s, tmp_date, tmp_logfile)
 							auth = True
+
 							if key_state: # if Locked
 								unlock()
-								s = "Unlocked the key\n"
-								print(s)
-								logfile.write(s)
+								s = "Unlocked the key"
+								tmp_logfile = write_log(s, tmp_date, tmp_logfile)
 								key_state = False
+
 							else:	      # if Unlocked
 								lock()
-								s = "Locked the key\n"
-								print(s)
-								logfile.write(s)
+								s = "Locked the key"
+								tmp_logfile = write_log(s, tmp_date, tmp_logfile)
 								key_state = True
 							break
 
 				# if the card is WRONG
 				if not auth:
-					s = "Wrong Card\n"
-					print(s)
-					logfile.write(s)
+					s = "Wrong Card"
+					tmp_logfile = write_log(s, tmp_date, tmp_logfile)
 					wrongCard(key_state)
 
 				normal_cards.close()
+				auto_close_cards.close()
 
 
 
 
 		except KeyboardInterrupt:
 			pass
-			s = "exit: Keyboard Intterrupt\n"
-			print(s)
-			logfile.write(s)
+			s = "exit: Keyboard Intterrupt"
+			tmp_logfile = write_log(s, tmp_date, tmp_logfile)
 
 			lock()
 			os.system("sudo killall servod")
@@ -204,9 +204,8 @@ def main():
 
 		except IOError:
 			pass
-			s ="exit: IO Error\n"
-			print(s)
-			logfile.write(s)
+			s ="exit: IO Error"
+			tmp_logfile = write_log(s, tmp_date, tmp_logfile)
 
 			lock()
 			os.system("sudo killall servod")
