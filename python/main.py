@@ -63,7 +63,7 @@ def main():
 
 				# Open Log file
 				today = dt.date.today()
-				now = dt.datetim.now()
+				now = dt.datetime.now()
 
 				if today == tmp_date:
 					logfile = open(filename_log_1, mode="a")
