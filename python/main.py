@@ -17,7 +17,7 @@ filename_auto_close_cards = "/home/pi/key/data/auto_close_cards.dat"
 filename_log_1 = "/home/pi/key/data/key-1.log"
 filename_log_2 = "/home/pi/key/data/key-2.log"
 
-def write_log(str, tmp_date, tmp_logfile):
+def write_log(s, tmp_date, tmp_logfile):
 	today = dt.date.today()
 	now = dt.datetime.now()
 	rt_filename = tmp_logfile
@@ -33,7 +33,7 @@ def write_log(str, tmp_date, tmp_logfile):
 
 		logfile = open(rt_filename, mode='w')
 
-	logfile.write(str(now) + str + '\n')
+	logfile.write(str(now) + ': ' + s + '\n')
 	logfile.close()
 
 	return rt_filename
