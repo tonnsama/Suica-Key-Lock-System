@@ -103,21 +103,29 @@ def main():
 					tmp_logfile = write_log(s, tmp_date, tmp_logfile)
 
 					unlock()
+
 					s = "Unlocked the key"
 					tmp_logfile = write_log(s, tmp_date, tmp_logfile)
 
-					start_time = time.time()
+					# start_time = time.time()
 					# Waiting for Opening the Door
 					s = "Open the door"
 					tmp_logfile = write_log(s, tmp_date, tmp_logfile)
 
 					time.sleep(2)
+
 					while True:
-						distance = measure()
-						elapsed_time = time.time() - start_time
+
+
+
+
+
+					while True:
+						# distance = measure()
+						# elapsed_time = time.time() - start_time
 					#	print(distance)
-						if distance > OPEN_DISTANCE or elapsed_time > OPEN_TIME:
-							s = "distance = " + str(distance) + "\nelapsed time = " + str(elapsed_time) + "\n"
+						if is_closed():
+							s =
 							tmp_logfile = write_log(s, tmp_date, tmp_logfile)
 							break
 						time.sleep(0.1)
@@ -138,7 +146,7 @@ def main():
 							s = "Locked the key"
 							tmp_logfile = write_log(s, tmp_date, tmp_logfile)
 							# logfile.write(distance)
-							s = "distance = " + str(distance) + "\nelapsed time = " + str(elapsed_time) + "\n"
+							s = "distance = " + str(distance) + ", elapsed time = " + str(elapsed_time) + "\n"
 							tmp_logfile = write_log(s, tmp_date, tmp_logfile)
 							break
 

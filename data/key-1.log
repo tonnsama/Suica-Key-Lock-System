@@ -1,39 +1,9 @@
-2020-03-08 19:03:28.891551Current key state is Locked
-2020-03-08 19:03:28.892066Successiful
-2020-03-08 19:03:30.408742Unlocked the key
-2020-03-08 19:03:45.079409Current key state is Unlocked
-2020-03-08 19:03:45.079810Successiful
-2020-03-08 19:03:46.593146Locked the key
-2020-03-08 19:04:58.295015: Current key state is Locked
-2020-03-08 19:04:58.295501: Successiful
-2020-03-08 19:04:59.809924: Unlocked the key
-2020-03-08 19:05:01.917370: Current key state is Unlocked
-2020-03-08 19:05:01.919312: Successiful
-2020-03-08 19:05:03.435998: Locked the key
-2020-03-08 19:05:09.422329: Auto Close Card
-2020-03-08 19:05:09.424202: Current key state is Locked
-2020-03-08 19:05:09.424690: Express Card : the Key will be Locked Automatically
-2020-03-08 19:05:10.938004: Unlocked the key
-2020-03-08 19:05:10.938297: Open the door
-2020-03-08 19:05:13.950853: distance = 3.77345085144
-elapsed time = 3.01237106323
-
-2020-03-08 19:05:13.951257: Close the door
-2020-03-08 19:05:18.469794: Locked the key
-2020-03-08 19:05:18.470341: distance = 2.88987159729
-elapsed time = 5.01478815079
-
-2020-03-08 19:05:26.342785: Auto Close Card
-2020-03-08 19:05:26.343146: Current key state is Locked
-2020-03-08 19:05:26.355093: Express Card : the Key will be Locked Automatically
-2020-03-08 19:05:27.868743: Unlocked the key
-2020-03-08 19:05:27.869031: Open the door
-2020-03-08 19:05:29.872701: distance = 11.2190246582
-elapsed time = 2.00350809097
-
-2020-03-08 19:05:29.873077: Close the door
-2020-03-08 19:05:37.033968: Locked the key
-2020-03-08 19:05:37.034506: distance = 3.67212295532
-elapsed time = 6.6484401226
-
-2020-03-08 19:05:39.746630: exit: Keyboard Intterrupt
+2020-03-09 06:00:40.387147
+Auto Close Card
+Current key state is Locked
+Express Card : the Key will be Locked Automatically
+Unlocked the key
+Open the door
+distance = 11.4095211029
+elapsed time = 2.00874400139
+Close the door
