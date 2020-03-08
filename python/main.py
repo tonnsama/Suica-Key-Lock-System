@@ -3,21 +3,40 @@ import nfc
 import os, time, sys, datetime as dt
 
 # User Python fuction
-from key_move import lock
-from key_move import unlock
-from key_move import wrongCard
-from sensor import measure
+from key_move import *
+from sensor import *
 
 
-OPEN_TIME = 3 # second
-CLOSE_TIME = 60 # second
+OPEN_TIME = 3 # sec
+CLOSE_TIME = 30 # sec
 OPEN_DISTANCE = 7 # cm
 CLOSE_DISTANCE = 4 # cm
 
 filename_normal_cards = "/home/pi/key/data/normal_cards.dat"
 filename_auto_close_cards = "/home/pi/key/data/auto_close_cards.dat"
-filename_log = "/home/pi/key/data/key.log"
+filename_log_1 = "/home/pi/key/data/key-1.log"
+filename_log_2 = "/home/pi/key/data/key-2.log"
 
+def write_log(str, tmp_date, tmp_logfile):
+	today = dt.date.today()
+	now = dt.datetime.now()
+	rt_filename = tmp_logfile
+
+	if tmp_date == today:
+		logfile = open(tmp_logfile, mode='a')
+
+	else:
+		if tmp_logfile == filename_log_1:
+			rt_filename = filename_log_1
+		else:
+			rt_filename = filename_log_2
+
+		logfile = open(rt_filename, mode='w')
+
+	logfile.write(str(now) + str + '\n')
+	logfile.close()
+
+	return rt_filename
 
 
 
@@ -38,28 +57,27 @@ def main():
 	while True:
 		try:
 
-			# Open Log file
-			today = dt.date.today()
-			if today == tmp_date:
-				logfile = open(filename_log, mode="a")
-			else:
-				logfile = open(filename_log, mode="w")
-				logfile.write(today + "\n")
-
-
 			target_res = clf.sense(target_req, iterations=10, interval=0.01)
 
-			# s = "Touch your Card...\n"
-			# print(s)
-			# logfile.writelines(s)
-
 			if target_res != None:
+
+				# Open Log file
+				today = dt.date.today()
+
+				if today == tmp_date:
+					logfile = open(filename_log_1, mode="a")
+					logfile.write(str(now) + "\n")
+				else:
+					logfile = open(filename_log_1, mode="w")
+					logfile.write(str(now) + "\n")
+
 
 				card = binascii.hexlify(target_res.sensf_res) + '\n'
 				auth = False
 				is_auto_card = False
 				normal_cards = open(filename_normal_cards, 'r')
 				auto_close_cards = open(filename_auto_close_cards, 'r')
+				tmp_date = today
 
 				for line in auto_close_cards:
 					if card == line:
@@ -102,15 +120,18 @@ def main():
 						elapsed_time = time.time() - start_time
 					#	print(distance)
 						if distance > OPEN_DISTANCE or elapsed_time > OPEN_TIME:
+							s = "distance = " + str(distance) + "\nelapsed time = " + str(elapsed_time) + "\n"
+							logfile.write(s)
 							break
 						time.sleep(0.1)
+
 
 					s = "Close the door\n"
 					print(s)
 					logfile.write(s)
 
 					time.sleep(2)
-					# Winting for Closing the Door
+					# Waiting for Closing the Door
 					while True:
 						distance = measure()
 						elapsed_time = time.time() - start_time
@@ -121,10 +142,14 @@ def main():
 							s = "Locked the key\n"
 							print(s)
 							logfile.write(s)
+							# logfile.write(distance)
+							s = "distance = " + str(distance) + "\nelapsed time = " + str(elapsed_time) + "\n"
+							logfile.write(s)
 							break
+
 						time.sleep(0.1)
 
-					tmp_date = today
+
 					logfile.close()
 					continue
 
