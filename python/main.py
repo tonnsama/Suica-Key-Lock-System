@@ -7,11 +7,6 @@ from key_move import *
 from sensor import *
 
 
-OPEN_TIME = 3 # sec
-CLOSE_TIME = 30 # sec
-OPEN_DISTANCE = 7 # cm
-CLOSE_DISTANCE = 4 # cm
-
 filename_normal_cards = "/home/pi/key/data/normal_cards.dat"
 filename_auto_close_cards = "/home/pi/key/data/auto_close_cards.dat"
 filename_log_1 = "/home/pi/key/data/key-1.log"
