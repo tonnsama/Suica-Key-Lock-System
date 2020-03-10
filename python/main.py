@@ -62,23 +62,12 @@ def main():
 
 			if target_res != None:
 
-				# Open Log file
-				# today = dt.date.today()
-
-				# if today == tmp_date:
-				# 	logfile = open(filename_log_1, mode="a")
-				# 	logfile.write(str(now) + "\n")
-				# else:
-				# 	logfile = open(filename_log_1, mode="w")
-				# 	logfile.write(str(now) + "\n")
-
 
 				card = binascii.hexlify(target_res.sensf_res) + '\n'
 				auth = False
 				is_auto_card = False
 				normal_cards = open(filename_normal_cards, 'r')
 				auto_close_cards = open(filename_auto_close_cards, 'r')
-				# tmp_date = today
 
 				for line in auto_close_cards:
 					if card == line:
@@ -107,18 +96,11 @@ def main():
 					s = "Unlocked the key"
 					tmp_logfile = write_log(s, tmp_date, tmp_logfile)
 
-					# start_time = time.time()
 					# Waiting for Opening the Door
 					s = "Open the door"
 					tmp_logfile = write_log(s, tmp_date, tmp_logfile)
 
 					time.sleep(2)
-
-<<<<<<< HEAD
-
-
-=======
->>>>>>> develop
 
 					while True:
 						if not is_closed():
