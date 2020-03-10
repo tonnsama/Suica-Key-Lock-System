@@ -45,7 +45,6 @@ def main():
 	target_req.sensf_req = bytearray.fromhex("0000030000")
 
 
-
 	tmp_date = dt.date.today()
 	key_state = True # lock position
 	tmp_logfile = filename_log_1
@@ -57,9 +56,8 @@ def main():
 
 			if target_res != None:
 
-
 				card = binascii.hexlify(target_res.sensf_res) + '\n'
-				auth = False
+				is_normal_card = False
 				is_auto_card = False
 				normal_cards = open(filename_normal_cards, 'r')
 				auto_close_cards = open(filename_auto_close_cards, 'r')
@@ -68,11 +66,15 @@ def main():
 					if card == line:
 						is_auto_card = True
 
-				# if it is an Auto Close Card and Key is Locked
+				# Auto Close Card or Normal Card
 				if is_auto_card:
-					s = "Auto Close Card"
+					s = "****** Auto Close Card ******"
+					tmp_logfile = write_log(s, tmp_date, tmp_logfile)
+				else:
+					s = "****** Normal Card ******"
 					tmp_logfile = write_log(s, tmp_date, tmp_logfile)
 
+				# Key is Locked or Unlocked
 				if key_state:
 					s = "Current key state is Locked"
 					tmp_logfile = write_log(s, tmp_date, tmp_logfile)
@@ -82,56 +84,55 @@ def main():
 
 
 
+				'''
+					Auto Card and Locked
+				'''
 				if is_auto_card and key_state:
-					s = "Express Card : the Key will be Locked Automatically"
+					s = "Auto Card : Locked Automatically"
 					tmp_logfile = write_log(s, tmp_date, tmp_logfile)
 
-					unlock()
+					unlock() # UNLOCK the Key
 
 					s = "Unlocked the key"
 					tmp_logfile = write_log(s, tmp_date, tmp_logfile)
 
+
 					# Waiting for Opening the Door
 					s = "Open the door"
 					tmp_logfile = write_log(s, tmp_date, tmp_logfile)
-
-					time.sleep(2)
-
-					while True:
-						if not is_closed():
-							s = 'The door is opened'
-							tmp_logfile = write_log(s, tmp_date, tmp_logfile)
-							break
+					while is_closed():
 						time.sleep(0.1)
 
-
-					s = "Close the door"
+					s = 'The door is opened. Close the door'
 					tmp_logfile = write_log(s, tmp_date, tmp_logfile)
+
 
 					time.sleep(2)
 					# Waiting for Closing the Door
-					while True:
-						if is_closed():
-							time.sleep(1)
-							lock()
-							s = "Locked the key"
-							tmp_logfile = write_log(s, tmp_date, tmp_logfile)
-							break
-
+					while not is_closed():
 						time.sleep(0.1)
+					
+					time.sleep(1)
+
+					lock() # LOCK the Key
+
+					s = "Locked the key"
+					tmp_logfile = write_log(s, tmp_date, tmp_logfile)
 
 					continue
 
 
-				# if it is Normal Card or Key is Unlocked
 				else:
+					'''
+						Normal Card or Key is Unlocked
+					'''
 					# check the card
 					for line in normal_cards:
 						# if the Card is Registered
 						if card == line:
 							s = "Successiful"
 							tmp_logfile = write_log(s, tmp_date, tmp_logfile)
-							auth = True
+							is_normal_card = True
 
 							if key_state: # if Locked
 								unlock()
@@ -146,8 +147,12 @@ def main():
 								key_state = True
 							break
 
+
+				'''
+					Not Registered
+				'''
 				# if the card is WRONG
-				if not auth:
+				if not is_normal_card:
 					s = "Wrong Card"
 					tmp_logfile = write_log(s, tmp_date, tmp_logfile)
 					wrongCard(key_state)
