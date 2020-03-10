@@ -5,10 +5,12 @@ GPIO.setmode(GPIO.BCM)
 
 Trig = 24
 Echo = 23
+read_sw = 27
 
 GPIO.setup(Trig, GPIO.OUT)
 GPIO.setup(Echo, GPIO.IN)
 GPIO.output(Trig, GPIO.LOW)
+GPIO.setup(read_sw, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
 
 def measure():
 	# Triger
@@ -25,3 +27,9 @@ def measure():
 	distance = passedTime * 17000
 
 	return distance
+
+def is_closed():
+	if GPIO.input(read_sw) == GPIO.HIGH:
+		return True
+	else:
+		return False
