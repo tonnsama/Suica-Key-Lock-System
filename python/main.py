@@ -114,18 +114,10 @@ def main():
 
 					time.sleep(2)
 
-					while True:
-
-
-
-
 
 					while True:
-						# distance = measure()
-						# elapsed_time = time.time() - start_time
-					#	print(distance)
-						if is_closed():
-							s =
+						if not is_closed():
+							s = 'The door is opened'
 							tmp_logfile = write_log(s, tmp_date, tmp_logfile)
 							break
 						time.sleep(0.1)
@@ -137,23 +129,15 @@ def main():
 					time.sleep(2)
 					# Waiting for Closing the Door
 					while True:
-						distance = measure()
-						elapsed_time = time.time() - start_time
-					#	print(distance)
-						if distance < CLOSE_DISTANCE or elapsed_time > CLOSE_TIME:
+						if is_closed():
 							time.sleep(1)
 							lock()
 							s = "Locked the key"
-							tmp_logfile = write_log(s, tmp_date, tmp_logfile)
-							# logfile.write(distance)
-							s = "distance = " + str(distance) + ", elapsed time = " + str(elapsed_time) + "\n"
 							tmp_logfile = write_log(s, tmp_date, tmp_logfile)
 							break
 
 						time.sleep(0.1)
 
-
-					# logfile.close()
 					continue
 
 
