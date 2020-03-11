@@ -45,7 +45,6 @@ def main():
 	target_req.sensf_req = bytearray.fromhex("0000030000")
 
 
-	tmp_date = dt.date.today()
 	key_state = True # lock position
 	tmp_logfile = filename_log_1
 
@@ -53,6 +52,7 @@ def main():
 		try:
 
 			target_res = clf.sense(target_req, iterations=10, interval=0.01)
+			tmp_date = dt.date.today()
 
 			if target_res != None:
 
@@ -126,7 +126,6 @@ def main():
 					'''
 						Normal Card or Key is Unlocked
 					'''
-					# check the card
 					for line in normal_cards:
 						# if the Card is Registered
 						if card == line:
@@ -151,7 +150,6 @@ def main():
 				'''
 					Not Registered
 				'''
-				# if the card is WRONG
 				if not is_normal_card:
 					s = "Wrong Card"
 					tmp_logfile = write_log(s, tmp_date, tmp_logfile)
@@ -182,7 +180,7 @@ def main():
 			os.system("sudo killall servod")
 			break
 
-		time.sleep(0.05)
+		time.sleep(0.1)
 
 	clf.close()
 
