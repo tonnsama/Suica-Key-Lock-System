@@ -1,7 +1,5 @@
 import binascii
 import nfc
-from key_move import lock
-from key_move import unlock
 import time, os, sys
 
 filename_normal_cards = "/home/pi/key/data/normal_cards.dat"
