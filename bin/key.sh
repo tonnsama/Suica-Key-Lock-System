@@ -1,2 +1,2 @@
 #!/bin/bash
-python /home/pi/key/python/main.py
+python /home/pi/key/main.py

@@ -3,14 +3,15 @@ import nfc
 import os, time, sys, datetime as dt
 
 # User Python fuction
-from key_move import *
-from sensor import *
+from python_pkg.key_move import *
+from python_pkg.sensor import *
 
 
 filename_normal_cards = "/home/pi/key/data/normal_cards.dat"
 filename_auto_close_cards = "/home/pi/key/data/auto_close_cards.dat"
 filename_log_1 = "/home/pi/key/data/key-1.log"
 filename_log_2 = "/home/pi/key/data/key-2.log"
+
 
 def write_log(s, tmp_date, tmp_logfile):
 	today = dt.date.today()
@@ -34,7 +35,6 @@ def write_log(s, tmp_date, tmp_logfile):
 	return rt_filename
 
 
-
 def main():
 
 	os.system("sudo servod --p1pins=11")
@@ -45,14 +45,17 @@ def main():
 	target_req.sensf_req = bytearray.fromhex("0000030000")
 
 
-	tmp_date = dt.date.today()
+	# tmp_date = dt.date.today()
 	key_state = True # lock position
 	tmp_logfile = filename_log_1
+
+
 
 	while True:
 		try:
 
 			target_res = clf.sense(target_req, iterations=10, interval=0.01)
+			tmp_date = dt.date.today()
 
 			if target_res != None:
 
@@ -88,7 +91,7 @@ def main():
 					Auto Card and Locked
 				'''
 				if is_auto_card and key_state:
-					s = "Auto Card : Locked Automatically"
+					s = "Auto Card: Lock Automatically"
 					tmp_logfile = write_log(s, tmp_date, tmp_logfile)
 
 					unlock() # UNLOCK the Key
@@ -111,7 +114,7 @@ def main():
 					# Waiting for Closing the Door
 					while not is_closed():
 						time.sleep(0.1)
-					
+
 					time.sleep(1)
 
 					lock() # LOCK the Key
