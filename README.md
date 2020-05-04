@@ -2,11 +2,11 @@
 Visit [this page](https://hackmd.io/@tonnsama/suica_key) for detail.
 
 ## Add a New Card
-You can add a new card with `add_new_card.py`.
+You can add a new card with `add_card.py`.
 
-To add an auto close card, run `$ sudo python add_new_card.py a`.
+To add an auto close card, run `$ sudo python add_card.py a`.
 
-To add a normal card, run `$ sudo python add_new_card.py n`.
+To add a normal card, run `$ sudo python add_card.py n`.
 
 ## main.py
 This is the main file for running this system.
