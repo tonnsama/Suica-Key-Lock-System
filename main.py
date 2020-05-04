@@ -8,8 +8,8 @@ from keymodule.keyLock import *
 from keymodule.sensor import *
 
 
-filename_normal_cards = "/home/pi/key/data/normal_cards.dat"
-filename_auto_close_cards = "/home/pi/key/data/auto_close_cards.dat"
+filename_normal_cards = "/home/pi/key/data/cards/normal.dat"
+filename_auto_close_cards = "/home/pi/key/data/cards/auto_close.dat"
 filename_log_1 = "/home/pi/key/data/key-1.log"
 filename_log_2 = "/home/pi/key/data/key-2.log"
 
@@ -37,6 +37,9 @@ def writeLog(s, tmp_date, tmp_logfile):
 
 
 def main():
+	tmp_date = dt.date.today()
+	tmp_logfile = filename_log_1
+	key_state = True # lock position
 
 	# os.system("sudo servod --p1pins=11")
 	clf = nfc.ContactlessFrontend('usb')
@@ -44,11 +47,6 @@ def main():
 	target_req = nfc.clf.RemoteTarget("212F")
 	# 0003(Suica)
 	target_req.sensf_req = bytearray.fromhex("0000030000")
-
-
-	# tmp_date = dt.date.today()
-	key_state = True # lock position
-	tmp_logfile = filename_log_1
 
 	lock()
 
@@ -175,10 +173,11 @@ def main():
 			break
 
 
-		except IOError:
+		except IOError as e:
 			pass
 			s ="exit: IO Error"
 			tmp_logfile = writeLog(s, tmp_date, tmp_logfile)
+			tmp_logfile = writeLog(str(e), tmp_date, tmp_logfile)
 
 			lock()
 			# os.system("sudo killall servod")
