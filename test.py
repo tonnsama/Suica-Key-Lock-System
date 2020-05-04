@@ -1,7 +1,11 @@
-from python_pkg.KeyLock import *
+from keymodule.sensorNew import *
 import time
 
-unlock()
-time.sleep(2)
-lock()
-time.sleep(2)
+while True:
+    if isClosed():
+      print('CLOSED')
+    else:
+      print('OPEN')
+    # print(reed_switch.value)
+
+    time.sleep(0.05)
