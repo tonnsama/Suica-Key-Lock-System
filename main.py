@@ -54,9 +54,8 @@ def main():
 		try:
 
 			target_res = clf.sense(target_req, iterations=10, interval=0.01)
-			tmp_date = dt.date.today()
 
-			if target_res != None:
+			if target_res != None: # A Card is Touched
 
 				card = binascii.hexlify(target_res.sensf_res) + '\n'
 				is_normal_card = False
@@ -157,6 +156,7 @@ def main():
 					tmp_logfile = writeLog(s, tmp_date, tmp_logfile)
 					wrongCard(key_state)
 
+				tmp_date = dt.date.today()
 				normal_cards.close()
 				auto_close_cards.close()
 
