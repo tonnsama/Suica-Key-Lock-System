@@ -26,7 +26,7 @@ def openLogFile(tmp_logfile_name, tmp_date):
 			rt_logfile_name = filename_log_1
 			logfile = open(rt_logfile_name, mode='w')
 
-		return logfile, rt_logfile_name
+	return logfile, rt_logfile_name
 
 def closeLogFile(logfile):
 	logfile.close()
