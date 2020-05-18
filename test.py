@@ -27,10 +27,12 @@ def writeLog(s, tmp_date, tmp_logfile):
 
 
 if __name__ == '__main__':
-  tmp_date = dt.date.today()
-  next_date = tmp_date + dt.timedelta(1)
-  tmp_logfile = filename_log_1
-  s = "****** Auto Close Card ******"
-  tmp_logfile = writeLog(s, tmp_date, tmp_logfile)
-  tmp_logfile = writeLog(s, next_date, tmp_logfile)
-  print(tmp_logfile)
+	tmp_date = dt.date.today() - dt.timedelta(days=1)
+	tmp_logfile = filename_log_1
+	s = "******   Normal Card   ******"
+	tmp_logfile = writeLog(s, tmp_date, tmp_logfile)
+	tmp_logfile = writeLog(s, tmp_date, tmp_logfile)
+	tmp_logfile = writeLog(s, tmp_date, tmp_logfile)
+	tmp_logfile = writeLog(s, tmp_date, tmp_logfile)
+
+	print(tmp_logfile)

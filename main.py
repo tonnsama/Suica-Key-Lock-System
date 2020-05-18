@@ -13,32 +13,33 @@ filename_auto_close_cards = "/home/pi/key/data/cards/auto_close.dat"
 filename_log_1 = "/home/pi/key/data/key-1.log"
 filename_log_2 = "/home/pi/key/data/key-2.log"
 
-
-def writeLog(s, tmp_date, tmp_logfile):
+def openLogFile(tmp_logfile_name, tmp_date):
 	today = dt.date.today()
-	now = dt.datetime.now()
-	rt_filename = tmp_logfile
-
 	if tmp_date == today:
-		logfile = open(tmp_logfile, mode='a')
-
+		rt_logfile_name = tmp_logfile_name
+		logfile = open(rt_logfile_name, mode='a')
 	else:
-		if tmp_logfile == filename_log_1:
-			rt_filename = filename_log_2
+		if tmp_logfile_name == filename_log_1:
+			rt_logfile_name = filename_log_2
+			logfile = open(rt_logfile_name, mode='w')
 		else:
-			rt_filename = filename_log_1
+			rt_logfile_name = filename_log_1
+			logfile = open(rt_logfile_name, mode='w')
 
-		logfile = open(rt_filename, mode='w')
+		return logfile, rt_logfile_name
 
-	logfile.write(str(now) + ': ' + s + '\n')
+def closeLogFile(logfile):
 	logfile.close()
 
-	return rt_filename
+
+def writeLog(s, logfile):
+	now = dt.datetime.now()
+	logfile.write(str(now) + ': ' + s + '\n')
 
 
 def main():
 	tmp_date = dt.date.today()
-	tmp_logfile = filename_log_1
+	tmp_logfile_name = filename_log_1
 	key_state = True # lock position
 
 	# os.system("sudo servod --p1pins=11")
@@ -63,6 +64,8 @@ def main():
 				normal_cards = open(filename_normal_cards, 'r')
 				auto_close_cards = open(filename_auto_close_cards, 'r')
 
+				logfile, tmp_logfile_name = openLogFile(tmp_logfile_name, tmp_date)
+
 				for line in auto_close_cards:
 					if card == line:
 						is_auto_card = True
@@ -70,18 +73,18 @@ def main():
 				# Auto Close Card or Normal Card
 				if is_auto_card:
 					s = "****** Auto Close Card ******"
-					tmp_logfile = writeLog(s, tmp_date, tmp_logfile)
+					writeLog(s, logfile)
 				else:
 					s = "******   Normal Card   ******"
-					tmp_logfile = writeLog(s, tmp_date, tmp_logfile)
+					writeLog(s, logfile)
 
 				# Key is Locked or Unlocked
 				if key_state:
 					s = "Current key state is Locked"
-					tmp_logfile = writeLog(s, tmp_date, tmp_logfile)
+					writeLog(s, logfile)
 				else:
 					s = "Current key state is Unlocked"
-					tmp_logfile = writeLog(s, tmp_date, tmp_logfile)
+					writeLog(s, logfile)
 
 
 
@@ -90,22 +93,22 @@ def main():
 				'''
 				if is_auto_card and key_state:
 					s = "Auto Card: Lock Automatically"
-					tmp_logfile = writeLog(s, tmp_date, tmp_logfile)
+					writeLog(s, logfile)
 
 					unlock() # UNLOCK the Key
 
 					s = "Unlocked the key"
-					tmp_logfile = writeLog(s, tmp_date, tmp_logfile)
+					writeLog(s, logfile)
 
 
 					# Waiting for Opening the Door
 					s = "Open the door"
-					tmp_logfile = writeLog(s, tmp_date, tmp_logfile)
+					writeLog(s, logfile)
 					while isClosed():
 						time.sleep(0.1)
 
 					s = 'The door is opened. Close the door'
-					tmp_logfile = writeLog(s, tmp_date, tmp_logfile)
+					writeLog(s, logfile)
 
 
 					time.sleep(2)
@@ -118,7 +121,7 @@ def main():
 					lock() # LOCK the Key
 
 					s = "Locked the key"
-					tmp_logfile = writeLog(s, tmp_date, tmp_logfile)
+					writeLog(s, logfile)
 
 					continue
 
@@ -131,19 +134,19 @@ def main():
 						# if the Card is Registered
 						if card == line:
 							s = "Successiful"
-							tmp_logfile = writeLog(s, tmp_date, tmp_logfile)
+							writeLog(s, logfile)
 							is_normal_card = True
 
 							if key_state: # if Locked
 								unlock()
 								s = "Unlocked the key"
-								tmp_logfile = writeLog(s, tmp_date, tmp_logfile)
+								writeLog(s, logfile)
 								key_state = False
 
 							else:	      # if Unlocked
 								lock()
 								s = "Locked the key"
-								tmp_logfile = writeLog(s, tmp_date, tmp_logfile)
+								writeLog(s, logfile)
 								key_state = True
 							break
 
@@ -153,10 +156,11 @@ def main():
 				'''
 				if not is_normal_card:
 					s = "Wrong Card"
-					tmp_logfile = writeLog(s, tmp_date, tmp_logfile)
+					writeLog(s, logfile)
 					wrongCard(key_state)
 
 				tmp_date = dt.date.today()
+				closeLogFile(logfile)
 				normal_cards.close()
 				auto_close_cards.close()
 
@@ -165,8 +169,10 @@ def main():
 
 		except KeyboardInterrupt:
 			pass
+			logfile, tmp_logfile_name = openLogFile(tmp_logfile_name, tmp_date)
 			s = "exit: Keyboard Intterrupt"
-			tmp_logfile = writeLog(s, tmp_date, tmp_logfile)
+			writeLog(s, logfile)
+			closeLogFile(logfile)
 
 			lock()
 			# os.system("sudo killall servod")
@@ -175,9 +181,11 @@ def main():
 
 		except IOError as e:
 			pass
+			logfile, tmp_logfile_name = openLogFile(tmp_logfile_name, tmp_date)
 			s ="exit: IO Error"
-			tmp_logfile = writeLog(s, tmp_date, tmp_logfile)
-			tmp_logfile = writeLog(str(e), tmp_date, tmp_logfile)
+			writeLog(s, logfile)
+			writeLog(str(e), logfile)
+			closeLogFile(logfile)
 
 			lock()
 			# os.system("sudo killall servod")
