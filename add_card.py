@@ -14,10 +14,10 @@ def add_card():
 
 	print("Touch a Card")
 	args = sys.argv
-	# print(args[1])
+	card_type = args[1]
 
 	while True:
-		if len(args) != 2 or not (args[1] == "n" or args[1] == "a"):
+		if len(args) != 2 or not (card_type == "n" or card_type == "a"):
 		# if args[1] != "n":
 			print("Please set your option n for normal or a for auto close")
 			break
@@ -31,18 +31,20 @@ def add_card():
 			flag = True
 
 			# Check if it's in "normal_cards.dat"
-			for line in normal_cards:
-				if card == line:
-					print("This card is already registered as a Normal Card")
-					flag = False
-					break
+			if card_type == 'n':
+				for line in normal_cards:
+					if card == line:
+						print("This card is already registered as a Normal Card")
+						flag = False
+						break
 
 			# Check if it's in "auto_close_cards.dat"
-			for line in auto_close_cards:
-				if card == line:
-					print("This card is already registerd as an Auto Close Card")
-					flag = False
-					break
+			if card_type == 'a':
+				for line in auto_close_cards:
+					if card == line:
+						print("This card is already registerd as an Auto Close Card")
+						flag = False
+						break
 
 			if flag:
 				# Add the card as a Normal Card

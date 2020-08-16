@@ -1,0 +1,11 @@
+[Unit]
+Description = key
+
+[Service]
+ExecStart = /home/pi/key/bin/key.sh
+Restart = always
+RestartSec = 10
+Type = simple
+
+[Install]
+WantedBy = multi-user.target
