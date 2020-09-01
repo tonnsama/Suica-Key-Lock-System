@@ -1,6 +1,9 @@
 #!/bin/sh
 
-# import Python library
+# Install pip
+sudo apt-get install python-pip
+
+# Install Python library
 sudo pip install nfcpy colorzero
 # enable users without sudo permisson
 sudo sh -c 'echo SUBSYSTEM==\"usb\", ACTION==\"add\", ATTRS{idVendor}==\"054c\", ATTRS{idProduct}==\"06c3\", GROUP=\"plugdev\" >> /etc/udev/rules.d/nfcdev.rules'
