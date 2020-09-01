@@ -8,10 +8,10 @@ from keymodule.keyLock import *
 from keymodule.sensor import *
 
 
-filename_normal_cards = os.getcwd() + "/data/cards/normal.dat"
-filename_auto_close_cards = os.getcwd() + "/data/cards/auto_close.dat"
-filename_log_1 = os.getcwd() + "/data/key-1.log"
-filename_log_2 = os.getcwd() + "/data/key-2.log"
+filename_normal_cards = os.path.dirname(os.path.abspath(__file__)) + "/data/cards/normal.dat"
+filename_auto_close_cards = os.path.dirname(os.path.abspath(__file__)) + "/data/cards/auto_close.dat"
+filename_log_1 = os.path.dirname(os.path.abspath(__file__)) + "/data/key-1.log"
+filename_log_2 = os.path.dirname(os.path.abspath(__file__)) + "/data/key-2.log"
 
 def openLogFile(tmp_logfile_name, tmp_date):
 	today = dt.date.today()
