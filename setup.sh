@@ -1,7 +1,11 @@
 #!/bin/sh
 
-# Install pip
+sudo apt-get updata
+sudo apt-get upgrade
+
+# Install pip and gpiozero
 sudo apt-get install python-pip
+sudo apt-get install python-gpiozero
 
 # Install Python library
 sudo pip install nfcpy colorzero
