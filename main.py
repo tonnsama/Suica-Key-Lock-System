@@ -7,11 +7,11 @@ import os, time, sys, datetime as dt
 from keymodule.keyLock import *
 from keymodule.sensor import *
 
-
-filename_normal_cards = "/home/pi/key/data/cards/normal.dat"
-filename_auto_close_cards = "/home/pi/key/data/cards/auto_close.dat"
-filename_log_1 = "/home/pi/key/data/key-1.log"
-filename_log_2 = "/home/pi/key/data/key-2.log"
+root_path = os.path.dirname(os.path.abspath(__file__))
+filename_normal_cards = root_path + "/data/cards/normal.dat"
+filename_auto_close_cards = root_path + "/data/cards/auto_close.dat"
+filename_log_1 = root_path + "/data/log/key-1.log"
+filename_log_2 = root_path + "/data/log/key-2.log"
 
 def openLogFile(tmp_logfile_name, tmp_date):
 	today = dt.date.today()

@@ -15,3 +15,4 @@ touch data/cards/auto_close.dat
 sudo cp key.service /etc/systemd/system/key.service
 sudo systemctl daemon-reload
 sudo systemctl enable key
+sudo systemctl start key
