@@ -2,7 +2,7 @@
 Description = key
 
 [Service]
-ExecStart = /home/pi/key/bin/key.sh
+ExecStart = /home/tonnsama/key/bin/start-key.sh
 Restart = always
 RestartSec = 10
 Type = simple

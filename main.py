@@ -7,11 +7,12 @@ import os, time, sys, datetime as dt
 from keymodule.keyLock import *
 from keymodule.sensor import *
 
-root_path = os.path.dirname(os.path.abspath(__file__))
-filename_normal_cards = root_path + "/data/cards/normal.dat"
-filename_auto_close_cards = root_path + "/data/cards/auto_close.dat"
-filename_log_1 = root_path + "/data/log/key-1.log"
-filename_log_2 = root_path + "/data/log/key-2.log"
+WAIT_TIME = 3
+
+filename_normal_cards = os.path.dirname(os.path.abspath(__file__)) + "/data/cards/normal.dat"
+filename_auto_close_cards = os.path.dirname(os.path.abspath(__file__)) + "/data/cards/auto_close.dat"
+filename_log_1 = os.path.dirname(os.path.abspath(__file__)) + "/data/key-1.log"
+filename_log_2 = os.path.dirname(os.path.abspath(__file__)) + "/data/key-2.log"
 
 def openLogFile(tmp_logfile_name, tmp_date):
 	today = dt.date.today()
@@ -104,7 +105,10 @@ def main():
 					# Waiting for Opening the Door
 					s = "Open the door"
 					writeLog(s, logfile)
+					start = time.time()
 					while isClosed():
+						if time.time() - start > WAIT_TIME:
+							break
 						time.sleep(0.1)
 
 					s = 'The door is opened. Close the door'
@@ -113,6 +117,7 @@ def main():
 
 					time.sleep(2)
 					# Waiting for Closing the Door
+					start = time.time()
 					while not isClosed():
 						time.sleep(0.1)
 

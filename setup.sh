@@ -1,6 +1,13 @@
 #!/bin/sh
 
-# import Python library
+sudo apt-get updata
+sudo apt-get upgrade
+
+# Install pip and gpiozero
+sudo apt-get install python-pip
+sudo apt-get install python-gpiozero
+
+# Install Python library
 sudo pip install nfcpy colorzero
 # enable users without sudo permisson
 sudo sh -c 'echo SUBSYSTEM==\"usb\", ACTION==\"add\", ATTRS{idVendor}==\"054c\", ATTRS{idProduct}==\"06c3\", GROUP=\"plugdev\" >> /etc/udev/rules.d/nfcdev.rules'

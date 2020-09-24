@@ -2,9 +2,8 @@ import binascii
 import nfc
 import time, os, sys
 
-root_path = os.path.dirname(os.path.abspath(__file__))
-filename_normal_cards = root_path + "/data/cards/normal.dat"
-filename_auto_close_cards = root_path + "/data/cards/auto_close.dat"
+filename_normal_cards = os.path.dirname(os.path.abspath(__file__)) + "/data/cards/normal.dat"
+filename_auto_close_cards = os.path.dirname(os.path.abspath(__file__)) + "/data/cards/auto_close.dat"
 
 def add_card():
 	clf = nfc.ContactlessFrontend('usb')
